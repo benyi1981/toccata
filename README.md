@@ -8,7 +8,7 @@ Understand your customer behavior, always investing the appropriate amount with 
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://toccata.streamlit.app/)
 
 ## Colab notebook
-Placeholder
+Placeholder test
 
 ## Prerequisite libraries
 Here are the Python libraries used in the creation of this dashboard app
