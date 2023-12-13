@@ -81,11 +81,14 @@ config = load_config()
 
 customer_data_filepath = config["file_paths"]["customer_file"]
 geography_filepath = config["file_paths"]["geography_file"]
+au_geo_json = config["file_paths"]["au_geo_json"]
 
 #######################
 # Load data
 df_customer = pd.read_excel(customer_data_filepath)
 df_geography = pd.read_csv(geography_filepath)
+with open(au_geo_json) as f:
+    australia_geojson = json.load(f)
 
 # Creating a dictionary to map postcodes to states based on the highest state count for each postcode
 postcode_state_map = df_geography.groupby('postcode')['state'].agg(lambda x: x.value_counts().idxmax()).to_dict()
