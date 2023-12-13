@@ -192,13 +192,17 @@ def make_heatmap(input_df, input_y, input_x, input_color, input_color_theme):
 
 # Choropleth map
 def make_choropleth(input_df, input_id, input_column, input_color_theme):
-    choropleth = px.choropleth(input_df, locations=input_id, color=input_column,
-                               locationmode="country names",  
+    choropleth = px.choropleth(input_df, 
+                               geojson=australia_geojson, 
+                               locations=input_id, 
+                               featureidkey="properties.ste_iso3166_code", 
+                               color=input_column,
                                color_continuous_scale=input_color_theme,
                                range_color=(0, max(input_df[input_column])),
-                               scope="world",  
-                               labels={input_column: input_column}
+                               #scope="world"
                               )
+    
+    
     choropleth.update_geos(
         visible=False, resolution=110,
         showcountries=True, countrycolor="RebeccaPurple"

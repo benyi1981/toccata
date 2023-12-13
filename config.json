@@ -1,6 +1,7 @@
 {
     "file_paths": {
         "geography_file": "data/australian_postcodes.csv",
+        "au_geo_json": "data/georef-australia-state@public.geojson",
         "customer_file": "data/sampledata/Example report-customer_export-3509.xlsx"
     }
 }
