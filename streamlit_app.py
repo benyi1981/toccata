@@ -196,7 +196,7 @@ def make_choropleth(input_df, input_id, input_column, input_color_theme):
                                locationmode="country names",  
                                color_continuous_scale=input_color_theme,
                                range_color=(0, max(input_df[input_column])),
-                               scope="oceania",  
+                               scope="world",  
                                labels={input_column: input_column}
                               )
     choropleth.update_geos(
