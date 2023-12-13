@@ -116,31 +116,20 @@ customer_status = sorted(df_customer['status'].unique().tolist())
 # Sidebar
 
 # Function to display a multi-select as a dropdown
-def multiselect_dropdown(label, options, default, key):
-    # Checkbox to show/hide the multiselect widget
-    show = st.checkbox(label, value=False)
+import streamlit as st
 
-    # If checkbox is checked, show the multiselect widget
-    if show:
-        # Store selected options in session state
-        selected_options = st.multiselect("", options, default=default, key=key)
-        st.session_state[label] = selected_options
-    else:
-        # If not checked, use stored session state or default
-        selected_options = st.session_state.get(label, default)
-
-    return selected_options
-
+# Sidebar
 with st.sidebar:
     st.title('Toccata AI Churn Dashboard')
 
     # Reset button
-    st.session_state['selected_year'] = customer_join_year
-    st.session_state['selected_fin_year'] = customer_join_fin_year
-    st.session_state['selected_fin_qtr'] = customer_join_fin_qtr
-    st.session_state['selected_state'] = customer_state  # Assuming this is your list of states
-    st.session_state['selected_customer_status'] = ['Normal', 'Closed']
-    st.session_state['selected_color_theme'] = 'blues'
+    if st.button('Reset Filters'):
+        st.session_state['selected_year'] = customer_join_year
+        st.session_state['selected_fin_year'] = customer_join_fin_year
+        st.session_state['selected_fin_qtr'] = customer_join_fin_qtr
+        st.session_state['selected_state'] = customer_state
+        st.session_state['selected_customer_status'] = ['Normal', 'Closed']
+        st.session_state['selected_color_theme'] = 'blues'
 
     # Helper function to apply filter if not empty
     def apply_filter(df, column, values):
@@ -148,30 +137,25 @@ with st.sidebar:
             return df[df[column].isin(values)]
         return df
 
-
     # Select a customer join year with "All" option
-    selected_year = multiselect_dropdown('Customer Join Years', customer_join_year, default=customer_join_year, key='selected_year')
+    selected_year = st.multiselect('Customer Join Years', customer_join_year, default=customer_join_year, key='selected_year')
     df_filtered = apply_filter(df_customer, 'join_year', selected_year)
 
     # Select a customer join financial year with "All" option
-    selected_fin_year = multiselect_dropdown('Customer Join Financial Years', customer_join_fin_year, default=customer_join_fin_year, key='selected_fin_year')
+    selected_fin_year = st.multiselect('Customer Join Financial Years', customer_join_fin_year, default=customer_join_fin_year, key='selected_fin_year')
     df_filtered = apply_filter(df_filtered, 'join_fin_yr', selected_fin_year)
 
     # Select a customer join financial year and quarter with "All" option
-    selected_fin_qtr = multiselect_dropdown('Customer Join FY and Quarters', customer_join_fin_qtr, default=customer_join_fin_qtr, key='selected_fin_qtr')
+    selected_fin_qtr = st.multiselect('Customer Join FY and Quarters', customer_join_fin_qtr, default=customer_join_fin_qtr, key='selected_fin_qtr')
     df_filtered = apply_filter(df_filtered, 'join_fin_qtr', selected_fin_qtr)
 
-    # Select states (example states list)
-    selected_state = multiselect_dropdown('Select state(s)', customer_state, default=customer_state, key='selected_state')
+    # Select states
+    selected_state = st.multiselect('Select state(s)', customer_state, default=customer_state, key='selected_state')
     df_filtered = apply_filter(df_filtered, 'state', selected_state)
 
     # Select Customer Status
-    selected_customer_status = multiselect_dropdown('Select Customer Status', customer_status, default=customer_status, key='selected_customer_status')
+    selected_customer_status = st.multiselect('Select Customer Status', customer_status, default=customer_status, key='selected_customer_status')
     df_filtered = apply_filter(df_filtered, 'status', selected_customer_status)
-
-    # Select a color theme
-    color_theme_list = ['blues', 'cividis', 'greens', 'inferno', 'magma', 'plasma', 'reds', 'rainbow', 'turbo', 'viridis']
-    selected_color_theme = st.selectbox('Select a color theme', color_theme_list, key='selected_color_theme')
 
 
 #######################
