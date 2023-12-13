@@ -80,10 +80,15 @@ def load_config():
 config = load_config()
 
 customer_data_filepath = config["file_paths"]["customer_file"]
+geography_filepath = config["file_paths"]["geography_file"]
 
 #######################
 # Load data
 df_customer = pd.read_excel(customer_data_filepath)
+df_geography = pd.read_csv(geography_filepath)
+
+# Creating a dictionary to map postcodes to states based on the highest state count for each postcode
+postcode_state_map = df_geography.groupby('postcode')['state'].agg(lambda x: x.value_counts().idxmax()).to_dict()
 
 # Customer join cohort
 df_customer['join_year'] = df_customer['join_date'].dt.year
@@ -91,25 +96,31 @@ df_customer['join_month'] = df_customer['join_date'].dt.month
 df_customer['join_quarter'] = df_customer['join_month'].apply(get_financial_quarter)
 df_customer['join_fin_yr'] = df_customer['join_date'].apply(get_financial_year)
 df_customer['join_fin_qtr'] = df_customer[['join_fin_yr','join_quarter']].apply(get_financial_year_quarter, axis=1)
+df_customer['state'] = df_customer['postcode'].map(postcode_state_map)
 
 customer_join_year = sorted(df_customer['join_year'].unique().tolist())
 customer_join_fin_year = sorted(df_customer['join_fin_yr'].unique().tolist())
 customer_join_fin_qtr = sorted(df_customer['join_fin_qtr'].unique().tolist())
+customer_state = sorted(df_customer['state'].unique().tolist())
+
 
 #######################
 # Sidebar
 with st.sidebar:
-    st.title('Toccata AI Churn Dashboard')
+    st.title('Toccata AI Churn Dashboard filters')
 
-    selected_year = st.selectbox('Select a customer join year', customer_join_year, index=len(customer_join_year)-1)
+    selected_year = st.selectbox('Year in which customer joined', customer_join_year, index=len(customer_join_year)-1)
     df_selected_year = df_customer[df_customer.join_year == selected_year]
     #df_selected_year_sorted = df_selected_year.sort_values(by="population", ascending=False)
 
-    selected_fin_year = st.selectbox('Select a customer join financial year', customer_join_fin_year, index=len(customer_join_fin_year)-1)
+    selected_fin_year = st.selectbox('Financial year in which customer joined', customer_join_fin_year, index=len(customer_join_fin_year)-1)
     df_selected_fin_year = df_customer[df_customer.join_fin_yr == selected_fin_year]
 
-    selected_fin_qtr = st.selectbox('Select a customer join financial year and quarter', customer_join_fin_qtr, index=len(customer_join_fin_qtr)-1)
+    selected_fin_qtr = st.selectbox('FY and quarter in which customer joined', customer_join_fin_qtr, index=len(customer_join_fin_qtr)-1)
     df_selected_fin_qtr = df_customer[df_customer.join_fin_qtr == selected_fin_qtr]
+
+    selected_state = st.selectbox('Customer state', customer_state, index=len(customer_state)-1)
+    df_selected_state = df_customer[df_customer.state == selected_state]
 
     color_theme_list = ['blues', 'cividis', 'greens', 'inferno', 'magma', 'plasma', 'reds', 'rainbow', 'turbo', 'viridis']
     selected_color_theme = st.selectbox('Select a color theme', color_theme_list)
@@ -138,13 +149,22 @@ def make_heatmap(input_df, input_y, input_x, input_color, input_color_theme):
 
 # Choropleth map
 def make_choropleth(input_df, input_id, input_column, input_color_theme):
-    choropleth = px.choropleth(input_df, locations=input_id, color=input_column, locationmode="USA-states",
+    choropleth = px.choropleth(input_df, locations=input_id, color=input_column,
+                               locationmode="country names",  
                                color_continuous_scale=input_color_theme,
-                               range_color=(0, max(df_selected_year.population)),
-                               scope="usa",
-                               labels={'population':'Population'}
+                               range_color=(0, max(input_df[input_column])),
+                               scope="oceania",  
+                               labels={input_column: input_column}
                               )
+    choropleth.update_geos(
+        visible=False, resolution=110,
+        showcountries=True, countrycolor="RebeccaPurple"
+    )
     choropleth.update_layout(
+        geo=dict(
+            center={"lat": -25.2744, "lon": 133.7751},  # Center on Australia
+            projection_scale=5  # Adjust scale for better view
+        ),
         template='plotly_dark',
         plot_bgcolor='rgba(0, 0, 0, 0)',
         paper_bgcolor='rgba(0, 0, 0, 0)',
