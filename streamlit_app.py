@@ -109,6 +109,13 @@ customer_state = sorted(df_customer['state'].unique().tolist())
 with st.sidebar:
     st.title('Toccata AI Churn Dashboard filters')
 
+    # Reset button
+    if st.button('Reset Filters'):
+        st.session_state['selected_year'] = customer_join_year[-1]
+        st.session_state['selected_fin_year'] = customer_join_fin_year[-1]
+        st.session_state['selected_fin_qtr'] = customer_join_fin_qtr[-1]
+        st.session_state['selected_color_theme'] = 'blues'
+
     selected_year = st.selectbox('Year in which customer joined', customer_join_year, index=len(customer_join_year)-1)
     df_selected_year = df_customer[df_customer.join_year == selected_year]
     #df_selected_year_sorted = df_selected_year.sort_values(by="population", ascending=False)
