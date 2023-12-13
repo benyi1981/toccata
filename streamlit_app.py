@@ -107,30 +107,45 @@ customer_state = sorted(df_customer['state'].unique().tolist())
 #######################
 # Sidebar
 with st.sidebar:
-    st.title('Toccata AI Churn Dashboard filters')
+    st.title('Toccata AI Churn Dashboard')
 
     # Reset button
     if st.button('Reset Filters'):
-        st.session_state['selected_year'] = customer_join_year[-1]
-        st.session_state['selected_fin_year'] = customer_join_fin_year[-1]
-        st.session_state['selected_fin_qtr'] = customer_join_fin_qtr[-1]
+        st.session_state['selected_year'] = 'All'
+        st.session_state['selected_fin_year'] = 'All'
+        st.session_state['selected_fin_qtr'] = 'All'
         st.session_state['selected_color_theme'] = 'blues'
 
-    selected_year = st.selectbox('Year in which customer joined', customer_join_year, index=len(customer_join_year)-1)
-    df_selected_year = df_customer[df_customer.join_year == selected_year]
-    #df_selected_year_sorted = df_selected_year.sort_values(by="population", ascending=False)
+    # Helper function to apply filter if not "All"
+    def apply_filter(df, column, value):
+        if value != 'All':
+            return df[df[column] == value]
+        return df
 
-    selected_fin_year = st.selectbox('Financial year in which customer joined', customer_join_fin_year, index=len(customer_join_fin_year)-1)
-    df_selected_fin_year = df_customer[df_customer.join_fin_yr == selected_fin_year]
+    # Select a customer join year with "All" option
+    all_years = ['All'] + customer_join_year
+    selected_year = st.selectbox('Select a customer join year', all_years, index=0, key='selected_year')
+    
+    # Apply year filter
+    df_filtered = apply_filter(df_customer, 'join_year', selected_year)
 
-    selected_fin_qtr = st.selectbox('FY and quarter in which customer joined', customer_join_fin_qtr, index=len(customer_join_fin_qtr)-1)
-    df_selected_fin_qtr = df_customer[df_customer.join_fin_qtr == selected_fin_qtr]
+    # Select a customer join financial year with "All" option
+    all_fin_years = ['All'] + customer_join_fin_year
+    selected_fin_year = st.selectbox('Select a customer join financial year', all_fin_years, index=0, key='selected_fin_year')
+    
+    # Apply financial year filter
+    df_filtered = apply_filter(df_filtered, 'join_fin_yr', selected_fin_year)
 
-    selected_state = st.selectbox('Customer state', customer_state, index=len(customer_state)-1)
-    df_selected_state = df_customer[df_customer.state == selected_state]
+    # Select a customer join financial year and quarter with "All" option
+    all_fin_qtrs = ['All'] + customer_join_fin_qtr
+    selected_fin_qtr = st.selectbox('Select a customer join financial year and quarter', all_fin_qtrs, index=0, key='selected_fin_qtr')
+    
+    # Apply financial quarter filter
+    df_filtered = apply_filter(df_filtered, 'join_fin_qtr', selected_fin_qtr)
 
+    # Select a color theme
     color_theme_list = ['blues', 'cividis', 'greens', 'inferno', 'magma', 'plasma', 'reds', 'rainbow', 'turbo', 'viridis']
-    selected_color_theme = st.selectbox('Select a color theme', color_theme_list)
+    selected_color_theme = st.selectbox('Select a color theme', color_theme_list, key='selected_color_theme')
 
 
 #######################
