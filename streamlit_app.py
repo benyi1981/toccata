@@ -102,6 +102,7 @@ customer_join_year = sorted(df_customer['join_year'].unique().tolist())
 customer_join_fin_year = sorted(df_customer['join_fin_yr'].unique().tolist())
 customer_join_fin_qtr = sorted(df_customer['join_fin_qtr'].unique().tolist())
 customer_state = sorted(df_customer['state'].unique().tolist())
+customer_status = sorted(df_customer['status'].unique().tolist())
 
 
 #######################
@@ -158,9 +159,8 @@ with st.sidebar:
     df_filtered = apply_filter(df_filtered, 'state', selected_state)
 
     # Select Customer Status
-    customer_status_options = ['Normal', 'Closed']
-    selected_customer_status = multiselect_dropdown('Select Customer Status', customer_status_options, default=customer_status_options, key='selected_customer_status')
-    df_filtered = apply_filter(df_filtered, 'customer_status', selected_customer_status)
+    selected_customer_status = multiselect_dropdown('Select Customer Status', customer_status, default=customer_status, key='selected_customer_status')
+    df_filtered = apply_filter(df_filtered, 'status', selected_customer_status)
 
     # Select a color theme
     color_theme_list = ['blues', 'cividis', 'greens', 'inferno', 'magma', 'plasma', 'reds', 'rainbow', 'turbo', 'viridis']
