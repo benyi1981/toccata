@@ -99,17 +99,17 @@ customer_join_fin_qtr = sorted(df_customer['join_fin_qtr'].unique().tolist())
 #######################
 # Sidebar
 with st.sidebar:
-    st.title('Toccata AI Churn Dashboard test')
+    st.title('Toccata AI Churn Dashboard')
 
     selected_year = st.selectbox('Select a customer join year', customer_join_year, index=len(customer_join_year)-1)
     df_selected_year = df_customer[df_customer.join_year == selected_year]
     #df_selected_year_sorted = df_selected_year.sort_values(by="population", ascending=False)
 
     selected_fin_year = st.selectbox('Select a customer join financial year', customer_join_fin_year, index=len(customer_join_fin_year)-1)
-    df_selected_year = df_customer[df_customer.join_fin_yr == customer_join_fin_year]
+    df_selected_fin_year = df_customer[df_customer.join_fin_yr == selected_fin_year]
 
     selected_fin_qtr = st.selectbox('Select a customer join financial year and quarter', customer_join_fin_qtr, index=len(customer_join_fin_qtr)-1)
-    df_selected_year = df_customer[df_customer.join_fin_qtr == customer_join_fin_qtr]
+    df_selected_fin_qtr = df_customer[df_customer.join_fin_qtr == selected_fin_qtr]
 
     color_theme_list = ['blues', 'cividis', 'greens', 'inferno', 'magma', 'plasma', 'reds', 'rainbow', 'turbo', 'viridis']
     selected_color_theme = st.selectbox('Select a color theme', color_theme_list)
