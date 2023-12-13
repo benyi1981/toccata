@@ -110,38 +110,44 @@ with st.sidebar:
     st.title('Toccata AI Churn Dashboard')
 
     # Reset button
-    if st.button('Reset Filters'):
-        st.session_state['selected_year'] = 'All'
-        st.session_state['selected_fin_year'] = 'All'
-        st.session_state['selected_fin_qtr'] = 'All'
+        st.session_state['selected_year'] = customer_join_year
+        st.session_state['selected_fin_year'] = customer_join_fin_year
+        st.session_state['selected_fin_qtr'] = customer_join_fin_qtr
+        st.session_state['selected_state'] = customer_state  # Assuming this is your list of states
+        st.session_state['selected_customer_status'] = ['Normal', 'Closed']
         st.session_state['selected_color_theme'] = 'blues'
 
-    # Helper function to apply filter if not "All"
-    def apply_filter(df, column, value):
-        if value != 'All':
-            return df[df[column] == value]
+    # Helper function to apply filter if not empty
+    def apply_filter(df, column, values):
+        if values:
+            return df[df[column].isin(values)]
         return df
 
+
     # Select a customer join year with "All" option
-    all_years = ['All'] + customer_join_year
-    selected_year = st.selectbox('Select a customer join year', all_years, index=0, key='selected_year')
-    
-    # Apply year filter
+    all_years = customer_join_year
+    selected_year = st.multiselect('Select a customer join year', all_years, default=all_years, key='selected_year')
     df_filtered = apply_filter(df_customer, 'join_year', selected_year)
 
     # Select a customer join financial year with "All" option
-    all_fin_years = ['All'] + customer_join_fin_year
-    selected_fin_year = st.selectbox('Select a customer join financial year', all_fin_years, index=0, key='selected_fin_year')
-    
-    # Apply financial year filter
+    all_fin_years = customer_join_fin_year
+    selected_fin_year = st.multiselect('Select a customer join financial year', all_fin_years, default=all_fin_years, key='selected_fin_year')
     df_filtered = apply_filter(df_filtered, 'join_fin_yr', selected_fin_year)
 
     # Select a customer join financial year and quarter with "All" option
-    all_fin_qtrs = ['All'] + customer_join_fin_qtr
-    selected_fin_qtr = st.selectbox('Select a customer join financial year and quarter', all_fin_qtrs, index=0, key='selected_fin_qtr')
-    
-    # Apply financial quarter filter
+    all_fin_qtrs = customer_join_fin_qtr
+    selected_fin_qtr = st.multiselect('Select a customer join financial year and quarter', all_fin_qtrs, default=all_fin_qtrs, key='selected_fin_qtr')
     df_filtered = apply_filter(df_filtered, 'join_fin_qtr', selected_fin_qtr)
+
+    # Select states (example states list)
+    states_list = customer_state  # Replace with your states list
+    selected_state = st.multiselect('Select state(s)', states_list, key='selected_state')
+    df_filtered = apply_filter(df_filtered, 'state', selected_state)
+
+    # Select Customer Status
+    customer_status_options = ['Normal', 'Closed']
+    selected_customer_status = st.multiselect('Select Customer Status', customer_status_options, key='selected_customer_status')
+    df_filtered = apply_filter(df_filtered, 'customer_status', selected_customer_status)
 
     # Select a color theme
     color_theme_list = ['blues', 'cividis', 'greens', 'inferno', 'magma', 'plasma', 'reds', 'rainbow', 'turbo', 'viridis']
@@ -150,6 +156,8 @@ with st.sidebar:
 
 #######################
 # Plots
+
+
 
 # Heatmap
 def make_heatmap(input_df, input_y, input_x, input_color, input_color_theme):
