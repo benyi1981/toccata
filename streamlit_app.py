@@ -1,9 +1,11 @@
 #######################
 # Import libraries
 import streamlit as st
+import json
 import pandas as pd
 import altair as alt
 import plotly.express as px
+from data_processing import get_financial_quarter, get_financial_year, get_financial_year_quarter
 
 #######################
 # Page configuration
@@ -66,20 +68,48 @@ st.markdown("""
 
 
 #######################
-# Load data
-df_reshaped = pd.read_csv('data/us-population-2010-2019-reshaped.csv')
+# Load data configuration
 
+# Function to load the configuration
+def load_config():
+    with open('config.json') as config_file:
+        data = json.load(config_file)
+    return data
+
+# Load the configuration
+config = load_config()
+
+customer_data_filepath = config["file_paths"]["customer_file"]
+
+#######################
+# Load data
+df_customer = pd.read_excel(customer_data_filepath)
+
+# Customer join cohort
+df_customer['join_year'] = df_customer['join_date'].dt.year
+df_customer['join_month'] = df_customer['join_date'].dt.month
+df_customer['join_quarter'] = df_customer['join_month'].apply(get_financial_quarter)
+df_customer['join_fin_yr'] = df_customer['join_date'].apply(get_financial_year)
+df_customer['join_fin_qtr'] = df_customer[['join_fin_yr','join_quarter']].apply(get_financial_year_quarter, axis=1)
+
+customer_join_year = sorted(df_customer['join_year'].unique().tolist())
+customer_join_fin_year = sorted(df_customer['join_fin_yr'].unique().tolist())
+customer_join_fin_qtr = sorted(df_customer['join_fin_qtr'].unique().tolist())
 
 #######################
 # Sidebar
 with st.sidebar:
     st.title('Toccata AI Churn Dashboard')
-    
-    year_list = list(df_reshaped.year.unique())
-    
-    selected_year = st.selectbox('Select a year', year_list, index=len(year_list)-1)
-    df_selected_year = df_reshaped[df_reshaped.year == selected_year]
-    df_selected_year_sorted = df_selected_year.sort_values(by="population", ascending=False)
+
+    selected_year = st.selectbox('Select a customer join year', customer_join_year, index=len(customer_join_year)-1)
+    df_selected_year = df_customer[df_customer.join_year == selected_year]
+    #df_selected_year_sorted = df_selected_year.sort_values(by="population", ascending=False)
+
+    selected_fin_year = st.selectbox('Select a customer join financial year', customer_join_fin_year, index=len(customer_join_fin_year)-1)
+    df_selected_year = df_customer[df_customer.join_fin_yr == customer_join_fin_year]
+
+    selected_fin_qtr = st.selectbox('Select a customer join financial year and quarter', customer_join_fin_qtr, index=len(customer_join_fin_qtr)-1)
+    df_selected_year = df_customer[df_customer.join_fin_qtr == customer_join_fin_qtr]
 
     color_theme_list = ['blues', 'cividis', 'greens', 'inferno', 'magma', 'plasma', 'reds', 'rainbow', 'turbo', 'viridis']
     selected_color_theme = st.selectbox('Select a color theme', color_theme_list)
