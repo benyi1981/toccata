@@ -126,17 +126,17 @@ with st.sidebar:
 
     # Select a customer join year with "All" option
     all_years = customer_join_year
-    selected_year = st.multiselect('Select a customer join year', all_years, default=all_years, key='selected_year')
+    selected_year = st.multiselect('Customer Join Years', all_years, default=all_years, key='selected_year')
     df_filtered = apply_filter(df_customer, 'join_year', selected_year)
 
     # Select a customer join financial year with "All" option
     all_fin_years = customer_join_fin_year
-    selected_fin_year = st.multiselect('Select a customer join financial year', all_fin_years, default=all_fin_years, key='selected_fin_year')
+    selected_fin_year = st.multiselect('Customer Join Financial Years', all_fin_years, default=all_fin_years, key='selected_fin_year')
     df_filtered = apply_filter(df_filtered, 'join_fin_yr', selected_fin_year)
 
     # Select a customer join financial year and quarter with "All" option
     all_fin_qtrs = customer_join_fin_qtr
-    selected_fin_qtr = st.multiselect('Select a customer join financial year and quarter', all_fin_qtrs, default=all_fin_qtrs, key='selected_fin_qtr')
+    selected_fin_qtr = st.multiselect('Customer Join FY and Quarters', all_fin_qtrs, default=all_fin_qtrs, key='selected_fin_qtr')
     df_filtered = apply_filter(df_filtered, 'join_fin_qtr', selected_fin_qtr)
 
     # Select states (example states list)
