@@ -106,6 +106,23 @@ customer_state = sorted(df_customer['state'].unique().tolist())
 
 #######################
 # Sidebar
+
+# Function to display a multi-select as a dropdown
+def multiselect_dropdown(label, options, default, key):
+    # Checkbox to show/hide the multiselect widget
+    show = st.checkbox(label, value=True)
+
+    # If checkbox is checked, show the multiselect widget
+    if show:
+        # Store selected options in session state
+        selected_options = st.multiselect("", options, default=default, key=key)
+        st.session_state[label] = selected_options
+    else:
+        # If not checked, use stored session state or default
+        selected_options = st.session_state.get(label, default)
+
+    return selected_options
+
 with st.sidebar:
     st.title('Toccata AI Churn Dashboard')
 
@@ -126,27 +143,27 @@ with st.sidebar:
 
     # Select a customer join year with "All" option
     all_years = customer_join_year
-    selected_year = st.multiselect('Customer Join Years', all_years, default=all_years, key='selected_year')
+    selected_year = multiselect_dropdown('Customer Join Years', all_years, default=all_years, key='selected_year')
     df_filtered = apply_filter(df_customer, 'join_year', selected_year)
 
     # Select a customer join financial year with "All" option
     all_fin_years = customer_join_fin_year
-    selected_fin_year = st.multiselect('Customer Join Financial Years', all_fin_years, default=all_fin_years, key='selected_fin_year')
+    selected_fin_year = multiselect_dropdown('Customer Join Financial Years', all_fin_years, default=all_fin_years, key='selected_fin_year')
     df_filtered = apply_filter(df_filtered, 'join_fin_yr', selected_fin_year)
 
     # Select a customer join financial year and quarter with "All" option
     all_fin_qtrs = customer_join_fin_qtr
-    selected_fin_qtr = st.multiselect('Customer Join FY and Quarters', all_fin_qtrs, default=all_fin_qtrs, key='selected_fin_qtr')
+    selected_fin_qtr = multiselect_dropdown('Customer Join FY and Quarters', all_fin_qtrs, default=all_fin_qtrs, key='selected_fin_qtr')
     df_filtered = apply_filter(df_filtered, 'join_fin_qtr', selected_fin_qtr)
 
     # Select states (example states list)
     states_list = customer_state  # Replace with your states list
-    selected_state = st.multiselect('Select state(s)', states_list, key='selected_state')
+    selected_state = multiselect_dropdown('Select state(s)', states_list, key='selected_state')
     df_filtered = apply_filter(df_filtered, 'state', selected_state)
 
     # Select Customer Status
     customer_status_options = ['Normal', 'Closed']
-    selected_customer_status = st.multiselect('Select Customer Status', customer_status_options, key='selected_customer_status')
+    selected_customer_status = multiselect_dropdown('Select Customer Status', customer_status_options, key='selected_customer_status')
     df_filtered = apply_filter(df_filtered, 'customer_status', selected_customer_status)
 
     # Select a color theme
