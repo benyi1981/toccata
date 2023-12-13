@@ -202,7 +202,7 @@ def make_choropleth(input_df, input_id, input_column):
     # Ensure australia_geojson is defined and accessible here
 
     # Create a base map centered on Australia
-    m = folium.Map(location=[-25.2744, 133.7751], zoom_start=4)
+    m = folium.Map(location=[-25.2744, 133.7751], zoom_start=4, tiles='Stamen Toner')
 
     # Prepare a color scale
     max_count = max(input_df[input_column])
