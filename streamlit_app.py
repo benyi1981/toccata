@@ -110,12 +110,12 @@ with st.sidebar:
     st.title('Toccata AI Churn Dashboard')
 
     # Reset button
-        st.session_state['selected_year'] = customer_join_year
-        st.session_state['selected_fin_year'] = customer_join_fin_year
-        st.session_state['selected_fin_qtr'] = customer_join_fin_qtr
-        st.session_state['selected_state'] = customer_state  # Assuming this is your list of states
-        st.session_state['selected_customer_status'] = ['Normal', 'Closed']
-        st.session_state['selected_color_theme'] = 'blues'
+    st.session_state['selected_year'] = customer_join_year
+    st.session_state['selected_fin_year'] = customer_join_fin_year
+    st.session_state['selected_fin_qtr'] = customer_join_fin_qtr
+    st.session_state['selected_state'] = customer_state  # Assuming this is your list of states
+    st.session_state['selected_customer_status'] = ['Normal', 'Closed']
+    st.session_state['selected_color_theme'] = 'blues'
 
     # Helper function to apply filter if not empty
     def apply_filter(df, column, values):
