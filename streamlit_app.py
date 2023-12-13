@@ -6,6 +6,10 @@ import pandas as pd
 import altair as alt
 import plotly.express as px
 from data_processing import get_financial_quarter, get_financial_year, get_financial_year_quarter
+import folium
+import geopandas as gpd
+from branca.colormap import linear
+from streamlit_folium import folium_static
 
 #######################
 # Page configuration
@@ -194,34 +198,38 @@ def make_heatmap(input_df, input_y, input_x, input_color, input_color_theme):
     return heatmap
 
 # Choropleth map
-def make_choropleth(input_df, input_id, input_column, input_color_theme):
-    choropleth = px.choropleth(input_df, 
-                               geojson=australia_geojson, 
-                               locations=input_id, 
-                               featureidkey="properties.ste_iso3166_code", 
-                               color=input_column,
-                               color_continuous_scale=input_color_theme,
-                               range_color=(0, max(input_df[input_column])),
-                               #scope="world"
-                              )
-    
-    
-    choropleth.update_geos(
-        visible=False, resolution=110,
-        showcountries=True, countrycolor="RebeccaPurple"
-    )
-    choropleth.update_layout(
-        geo=dict(
-            center={"lat": -25.2744, "lon": 133.7751},  # Center on Australia
-            projection_scale=5  # Adjust scale for better view
-        ),
-        template='plotly_dark',
-        plot_bgcolor='rgba(0, 0, 0, 0)',
-        paper_bgcolor='rgba(0, 0, 0, 0)',
-        margin=dict(l=0, r=0, t=0, b=0),
-        height=350
-    )
-    return choropleth
+def make_choropleth(input_df, input_id, input_column):
+    # Ensure australia_geojson is defined and accessible here
+
+    # Create a base map centered on Australia
+    m = folium.Map(location=[-25.2744, 133.7751], zoom_start=4)
+
+    # Prepare a color scale
+    max_count = max(input_df[input_column])
+    min_count = min(input_df[input_column])
+    color_scale = linear.YlGnBu_09.scale(min_count, max_count)
+
+    # Function to apply style
+    def style_function(feature):
+        value = input_df[input_df[input_id] == feature['properties']['ste_iso3166_code']][input_column]
+        return {
+            'fillColor': color_scale(value.values[0]) if not value.empty else 'gray',
+            'color': 'black',
+            'weight': 1,
+            'fillOpacity': 0.7
+        }
+
+    # Create a GeoJson object and add to the base map
+    folium.GeoJson(
+        australia_geojson,
+        style_function=style_function
+    ).add_to(m)
+
+    # Add color scale to map
+    color_scale.caption = input_column
+    color_scale.add_to(m)
+
+    return m
 
 
 # Donut chart
@@ -328,8 +336,9 @@ with row_1_col[1]:
 
     df_reshaped = df_filtered.groupby('state').size().reset_index(name='customer_count')
 
-    choropleth = make_choropleth(df_reshaped, 'state', 'customer_count', selected_color_theme)
-    st.plotly_chart(choropleth, use_container_width=True)
+    choropleth = make_choropleth(df_reshaped, 'state', 'customer_count')
+    #st.plotly_chart(choropleth, use_container_width=True)
+    folium_static(choropleth)
     
     heatmap = make_heatmap(df_reshaped, 'year', 'state', 'customer_count', selected_color_theme)
     st.altair_chart(heatmap, use_container_width=True)

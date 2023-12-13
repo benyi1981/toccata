@@ -3,3 +3,7 @@ pandas
 altair
 plotly
 openpyxl
+folium
+geopandas
+branca
+streamlit_folium
