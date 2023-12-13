@@ -99,7 +99,7 @@ customer_join_fin_qtr = sorted(df_customer['join_fin_qtr'].unique().tolist())
 #######################
 # Sidebar
 with st.sidebar:
-    st.title('Toccata AI Churn Dashboard')
+    st.title('Toccata AI Churn Dashboard test')
 
     selected_year = st.selectbox('Select a customer join year', customer_join_year, index=len(customer_join_year)-1)
     df_selected_year = df_customer[df_customer.join_year == selected_year]
