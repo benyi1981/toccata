@@ -268,73 +268,73 @@ def calculate_population_difference(input_df, input_year):
 # Dashboard Main Panel
 row_1_col = st.columns((1, 5, 2))
 
-with row_1_col[0]:
-    st.markdown('#### Gains/Losses')
+# with row_1_col[0]:
+#     st.markdown('#### Gains/Losses')
 
-    df_population_difference_sorted = calculate_population_difference(df_reshaped, selected_year)
+#     df_population_difference_sorted = calculate_population_difference(df_reshaped, selected_year)
 
-    if selected_year > 2010:
-        first_state_name = df_population_difference_sorted.states.iloc[0]
-        first_state_population = format_number(df_population_difference_sorted.population.iloc[0])
-        first_state_delta = format_number(df_population_difference_sorted.population_difference.iloc[0])
-    else:
-        first_state_name = '-'
-        first_state_population = '-'
-        first_state_delta = ''
-    st.metric(label=first_state_name, value=first_state_population, delta=first_state_delta)
+#     if selected_year > 2010:
+#         first_state_name = df_population_difference_sorted.states.iloc[0]
+#         first_state_population = format_number(df_population_difference_sorted.population.iloc[0])
+#         first_state_delta = format_number(df_population_difference_sorted.population_difference.iloc[0])
+#     else:
+#         first_state_name = '-'
+#         first_state_population = '-'
+#         first_state_delta = ''
+#     st.metric(label=first_state_name, value=first_state_population, delta=first_state_delta)
 
-    if selected_year > 2010:
-        last_state_name = df_population_difference_sorted.states.iloc[-1]
-        last_state_population = format_number(df_population_difference_sorted.population.iloc[-1])   
-        last_state_delta = format_number(df_population_difference_sorted.population_difference.iloc[-1])   
-    else:
-        last_state_name = '-'
-        last_state_population = '-'
-        last_state_delta = ''
-    st.metric(label=last_state_name, value=last_state_population, delta=last_state_delta)
+#     if selected_year > 2010:
+#         last_state_name = df_population_difference_sorted.states.iloc[-1]
+#         last_state_population = format_number(df_population_difference_sorted.population.iloc[-1])   
+#         last_state_delta = format_number(df_population_difference_sorted.population_difference.iloc[-1])   
+#     else:
+#         last_state_name = '-'
+#         last_state_population = '-'
+#         last_state_delta = ''
+#     st.metric(label=last_state_name, value=last_state_population, delta=last_state_delta)
 
     
-    st.markdown('#### States Migration')
-    # Filter states with population difference > 50000
-    df_greater_50000 = df_population_difference_sorted[df_population_difference_sorted.population_difference_absolute > 50000]
-    # % of States with population difference > 50000
-    states_migration = int((len(df_greater_50000)/df_population_difference_sorted.states.nunique())*100)
-    donut_chart = make_donut(states_migration, 'States Migration', 'orange')
-    st.altair_chart(donut_chart)
+#     st.markdown('#### States Migration')
+#     # Filter states with population difference > 50000
+#     df_greater_50000 = df_population_difference_sorted[df_population_difference_sorted.population_difference_absolute > 50000]
+#     # % of States with population difference > 50000
+#     states_migration = int((len(df_greater_50000)/df_population_difference_sorted.states.nunique())*100)
+#     donut_chart = make_donut(states_migration, 'States Migration', 'orange')
+#     st.altair_chart(donut_chart)
 
 
 with row_1_col[1]:
-    st.markdown('#### Total Population')
-    
-    choropleth = make_choropleth(df_selected_year, 'states_code', 'population', selected_color_theme)
+    st.markdown('#### Total Customer Count')
+
+    df_reshaped = df_filtered.groupby(['join_year', 'join_month', 'join_quarter', 'join_fin_yr', 'join_fin_qtr']).size().reset_index(name='customer_count')
+
+    choropleth = make_choropleth(df_reshaped, 'state', 'customer_count', selected_color_theme)
     st.plotly_chart(choropleth, use_container_width=True)
     
-    heatmap = make_heatmap(df_reshaped, 'year', 'states', 'population', selected_color_theme)
+    heatmap = make_heatmap(df_reshaped, 'year', 'state', 'customer_count', selected_color_theme)
     st.altair_chart(heatmap, use_container_width=True)
     
 
 with row_1_col[2]:
     st.markdown('#### Top States')
-
-    st.dataframe(df_selected_year_sorted,
-                 column_order=("states", "population"),
+    df_reshaped = df_filtered.groupby(['join_year', 'join_month', 'join_quarter', 'join_fin_yr', 'join_fin_qtr']).size().reset_index(name='customer_count')
+    st.dataframe(df_reshaped,
+                 column_order=("state", "customer_count"),
                  hide_index=True,
                  width=None,
                  column_config={
                     "states": st.column_config.TextColumn(
                         "States",
                     ),
-                    "population": st.column_config.ProgressColumn(
-                        "Population",
+                    "customer_count": st.column_config.ProgressColumn(
+                        "Customer Count",
                         format="%f",
                         min_value=0,
-                        max_value=max(df_selected_year_sorted.population),
+                        max_value=max(df_reshaped.customer_count),
                      )}
                  )
     
     with st.expander('About'):
         st.write('''
-            - Data obtained from the [U.S. Census Bureau](https://www.census.gov/data/datasets/time-series/demo/popest/2010s-state-total.html).
-            - :orange[**Gains/Losses**] refers to states with high inbound and outbound migration in the selected year
-            - :orange[**States Migration**] refers to the percentage of states with annual inbound or outbound migration > 50,000
+            placeholder text
             ''')
