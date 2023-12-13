@@ -111,7 +111,7 @@ customer_status = sorted(df_customer['status'].unique().tolist())
 # Function to display a multi-select as a dropdown
 def multiselect_dropdown(label, options, default, key):
     # Checkbox to show/hide the multiselect widget
-    show = st.checkbox(label, value=True)
+    show = st.checkbox(label, value=False)
 
     # If checkbox is checked, show the multiselect widget
     if show:
@@ -269,12 +269,12 @@ def format_number(num):
     return f'{num // 1000} K'
 
 # Calculation year-over-year population migrations
-def calculate_population_difference(input_df, input_year):
-  selected_year_data = input_df[input_df['year'] == input_year].reset_index()
-  previous_year_data = input_df[input_df['year'] == input_year - 1].reset_index()
-  selected_year_data['population_difference'] = selected_year_data.population.sub(previous_year_data.population, fill_value=0)
-  selected_year_data['population_difference_absolute'] = abs(selected_year_data['population_difference'])
-  return pd.concat([selected_year_data.states, selected_year_data.id, selected_year_data.population, selected_year_data.population_difference, selected_year_data.population_difference_absolute], axis=1).sort_values(by="population_difference", ascending=False)
+# def calculate_population_difference(input_df, input_year):
+#   selected_year_data = input_df[input_df['year'] == input_year].reset_index()
+#   previous_year_data = input_df[input_df['year'] == input_year - 1].reset_index()
+#   selected_year_data['population_difference'] = selected_year_data.population.sub(previous_year_data.population, fill_value=0)
+#   selected_year_data['population_difference_absolute'] = abs(selected_year_data['population_difference'])
+#   return pd.concat([selected_year_data.states, selected_year_data.id, selected_year_data.population, selected_year_data.population_difference, selected_year_data.population_difference_absolute], axis=1).sort_values(by="population_difference", ascending=False)
 
 
 #######################
@@ -319,7 +319,7 @@ row_1_col = st.columns((1, 5, 2))
 with row_1_col[1]:
     st.markdown('#### Total Customer Count')
 
-    df_reshaped = df_filtered.groupby(['join_year', 'join_month', 'join_quarter', 'join_fin_yr', 'join_fin_qtr']).size().reset_index(name='customer_count')
+    df_reshaped = df_filtered.groupby('state').size().reset_index(name='customer_count')
 
     choropleth = make_choropleth(df_reshaped, 'state', 'customer_count', selected_color_theme)
     st.plotly_chart(choropleth, use_container_width=True)
