@@ -337,7 +337,7 @@ with row_1_col[1]:
 
 with row_1_col[2]:
     st.markdown('#### Top States')
-    df_reshaped = df_filtered.groupby(['join_year', 'join_month', 'join_quarter', 'join_fin_yr', 'join_fin_qtr']).size().reset_index(name='customer_count')
+    df_reshaped = df_filtered.groupby('state').size().reset_index(name='customer_count')
     st.dataframe(df_reshaped,
                  column_order=("state", "customer_count"),
                  hide_index=True,
