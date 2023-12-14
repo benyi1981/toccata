@@ -183,9 +183,16 @@ with st.sidebar:
 
 # Choropleth map
 def make_choropleth(input_df, input_id, input_column):
-    # Ensure australia_geojson is defined and accessible here
+    # Convert GeoJSON to a GeoDataFrame
+    gdf = gpd.GeoDataFrame.from_features(australia_geojson['features'])
 
-    # Create a base map centered on Australia
+    # Merge the DataFrame with the GeoDataFrame
+    merged_gdf = gdf.merge(input_df, left_on='ste_iso3166_code', right_on=input_id)
+
+    # Convert the merged GeoDataFrame back to GeoJSON
+    merged_geojson = merged_gdf.to_json()
+
+    # Create a base map
     m = folium.Map(location=[-25.2744, 133.7751], zoom_start=4, tiles='Stamen Toner', attr='Map data © OpenStreetMap contributors')
 
     # Prepare a color scale
@@ -193,20 +200,20 @@ def make_choropleth(input_df, input_id, input_column):
     min_count = min(input_df[input_column])
     color_scale = linear.YlGnBu_09.scale(min_count, max_count)
 
-    # Function to apply style
-    def style_function(feature):
-        value = input_df[input_df[input_id] == feature['properties']['ste_iso3166_code']][input_column]
-        return {
-            'fillColor': color_scale(value.values[0]) if not value.empty else 'gray',
+    # Create a GeoJson object with tooltips
+    folium.GeoJson(
+        merged_geojson,
+        style_function=lambda feature: {
+            'fillColor': color_scale(feature['properties'][input_column]) if feature['properties'][input_column] is not None else 'gray',
             'color': 'black',
             'weight': 1,
             'fillOpacity': 0.7
-        }
-
-    # Create a GeoJson object and add to the base map
-    folium.GeoJson(
-        australia_geojson,
-        style_function=style_function
+        },
+        tooltip=folium.GeoJsonTooltip(
+            fields=['ste_iso3166_code', input_column],
+            aliases=['State Code: ', 'Customer Count: '],
+            localize=True
+        )
     ).add_to(m)
 
     # Add color scale to map
