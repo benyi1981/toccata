@@ -1,11 +1,37 @@
 {
-    "file_paths": {
+    "files": {
         "geography_file": "data/australian_postcodes.csv",
         "au_geo_json": "data/georef-australia-state@public.geojson",
-        "customer_file": "data/simulated_customer_data.csv",
-        "order_file": "data/simulated_orders.csv",
-        "product_lookup_file": "data/promo_lookup.csv",
-        "promo_lookup_file": "data/promo_lookup.csv",
-        "gaining_provider_file": "data/simulated_gaining_provider_data.csv"
-    }
+        "customer_file": {
+            "path": "data/simulated_customer_data.csv",
+            "parse_dates": ["join_date", "date_of_birth"],
+            "columns_to_include": null
+        },
+        "order_file": {
+            "path": "data/simulated_orders.csv",
+            "parse_dates": ["date_requested"],
+            "columns_to_include": null
+        },
+        "product_lookup_file": {
+            "path": "data/promo_lookup.csv",
+            "parse_dates": null,
+            "columns_to_include": null
+        },
+        "promo_lookup_file": {
+            "path": "data/promo_lookup.csv",
+            "parse_dates": null,
+            "columns_to_include": null
+        }, 
+        "gaining_provider_file": {
+            "path": "data/simulated_gaining_provider_data.csv",
+            "parse_dates": null,
+            "columns_to_include": ["subscription_id","gaining_provider_name"]
+        },         
+        "model_stats_file": {
+            "path": "data/mate_churn_prediction_model_stats.csv",
+            "parse_dates": null,
+            "columns_to_include": null
+        }         
+    },
+   "timezone": "Australia/Sydney"
 }

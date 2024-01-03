@@ -83,13 +83,18 @@ def load_config():
 # Load the configuration
 config = load_config()
 
-customer_data_filepath = config["file_paths"]["customer_file"]
-geography_filepath = config["file_paths"]["geography_file"]
-au_geo_json = config["file_paths"]["au_geo_json"]
+order_file = config["files"]["order_file"]
+customer_file = config["files"]["customer_file"]
+gaining_provider_file = config["files"]["gaining_provider_file"]
+promo_lookup_file = config["files"]["promo_lookup_file"]
+model_stats_file = config["files"]["model_stats_file"]
+
+geography_filepath = config["files"]["geography_file"]
+au_geo_json = config["files"]["au_geo_json"]
 
 #######################
 # Load data
-df_customer = pd.read_csv(customer_data_filepath, parse_dates=['join_date','last_note'])
+df_customer = pd.read_csv(customer_file["path"], parse_dates=customer_file["parse_dates"])
 df_geography = pd.read_csv(geography_filepath)
 with open(au_geo_json) as f:
     australia_geojson = json.load(f)
