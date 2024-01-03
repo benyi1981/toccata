@@ -2,6 +2,10 @@
     "file_paths": {
         "geography_file": "data/australian_postcodes.csv",
         "au_geo_json": "data/georef-australia-state@public.geojson",
-        "customer_file": "data/sampledata/Example report-customer_export-3509.xlsx"
+        "customer_file": "/Users/benyi/Documents/GitHub/toccata/simulated_customer_data.csv",
+        "order_file": "/Users/benyi/Documents/GitHub/toccata/simulated_orders.csv",
+        "product_lookup_file": "/Users/benyi/Documents/GitHub/toccata/promo_lookup.csv",
+        "promo_lookup_file": "/Users/benyi/Documents/GitHub/toccata/promo_lookup.csv",
+        "gaining_provider_file": "/Users/benyi/Documents/GitHub/toccata/simulated_gaining_provider_data.csv"
     }
 }
