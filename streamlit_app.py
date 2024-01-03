@@ -104,7 +104,7 @@ postcode_state_map = df_geography.groupby('postcode')['state'].agg(lambda x: x.v
 
 # Customer join cohort
 if df_customer['join_date'].dtype != 'datetime64[ns]':
-    df_customer['join_date'] = pd.to_datetime(df_customer['join_date'])
+    df_customer['join_date'] = pd.to_datetime(df_customer['join_date'], format='%d-%m-%Y')
 
 df_customer['join_year'] = df_customer['join_date'].dt.year
 df_customer['join_month'] = df_customer['join_date'].dt.month
