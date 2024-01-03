@@ -169,8 +169,6 @@ with st.sidebar:
 #######################
 # Plots
 
-
-
 # Heatmap
 # def make_heatmap(input_df, input_y, input_x, input_color, input_color_theme):
 #     heatmap = alt.Chart(input_df).mark_rect().encode(
@@ -345,7 +343,7 @@ with row_1_col[1]:
 
 with row_1_col[2]:
     st.markdown('#### Top States')
-    df_reshaped = df_filtered.groupby('state').size().reset_index(name='customer_count')
+    df_reshaped = df_filtered.groupby('state').size().reset_index(name='customer_count').sort_values("customer_count",ascending=False)
     st.dataframe(df_reshaped,
                  column_order=("state", "customer_count"),
                  hide_index=True,
