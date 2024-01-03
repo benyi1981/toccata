@@ -94,7 +94,7 @@ au_geo_json = config["files"]["au_geo_json"]
 
 #######################
 # Load data
-df_customer = pd.read_csv(customer_file["path"], parse_dates=customer_file["parse_dates"])
+df_customer = pd.read_csv(customer_file["path"], parse_dates=customer_file["parse_dates"],  date_format='%d-%m-%Y')
 df_geography = pd.read_csv(geography_filepath)
 with open(au_geo_json) as f:
     australia_geojson = json.load(f)
