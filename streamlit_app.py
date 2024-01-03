@@ -103,6 +103,7 @@ with open(au_geo_json) as f:
 postcode_state_map = df_geography.groupby('postcode')['state'].agg(lambda x: x.value_counts().idxmax()).to_dict()
 
 # Customer join cohort
+print(type(df_customer['join_date'])[0])
 df_customer['join_year'] = df_customer['join_date'].dt.year
 df_customer['join_month'] = df_customer['join_date'].dt.month
 df_customer['join_quarter'] = df_customer['join_month'].apply(get_financial_quarter)
