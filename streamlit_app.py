@@ -89,7 +89,7 @@ au_geo_json = config["file_paths"]["au_geo_json"]
 
 #######################
 # Load data
-df_customer = pd.read_excel(customer_data_filepath)
+df_customer = pd.read_csv(customer_data_filepath, parse_dates=['join_date','last_note'])
 df_geography = pd.read_csv(geography_filepath)
 with open(au_geo_json) as f:
     australia_geojson = json.load(f)
