@@ -94,7 +94,7 @@ au_geo_json = config["files"]["au_geo_json"]
 
 #######################
 # Load data
-df_customer = pd.read_csv(customer_file["path"], parse_dates=customer_file["parse_dates"],  date_format='%d-%m-%Y')
+df_customer = pd.read_csv(customer_file["path"], parse_dates=customer_file["parse_dates"],  date_format='%d/%m/%Y')
 df_geography = pd.read_csv(geography_filepath)
 with open(au_geo_json) as f:
     australia_geojson = json.load(f)
@@ -104,7 +104,7 @@ postcode_state_map = df_geography.groupby('postcode')['state'].agg(lambda x: x.v
 
 # Customer join cohort
 if df_customer['join_date'].dtype != 'datetime64[ns]':
-    df_customer['join_date'] = pd.to_datetime(df_customer['join_date'], format='%d-%m-%Y')
+    df_customer['join_date'] = pd.to_datetime(df_customer['join_date'], format='%d/%m/%Y')
 
 df_customer['join_year'] = df_customer['join_date'].dt.year
 df_customer['join_month'] = df_customer['join_date'].dt.month
