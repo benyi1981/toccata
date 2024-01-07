@@ -84,7 +84,7 @@ def load_config():
 config = load_config()
 
 order_file = config["input_files"]["order_file"]
-customer_file = config["fiinput_filesles"]["customer_file"]
+customer_file = config["input_filesles"]["customer_file"]
 gaining_provider_file = config["input_files"]["gaining_provider_file"]
 promo_lookup_file = config["input_files"]["promo_lookup_file"]
 model_stats_file = config["input_files"]["model_stats_file"]
