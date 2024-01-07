@@ -1,0 +1,22 @@
+﻿subscription_type_id,subscription_name,subscription_type,product_share,price,gb_inclusion,upload,download,type,mobile_speed
+301,nbn 25/10 mobile bundle,internet + mobile,4.2,55,9999,10,25,NBN,
+302,nbn 50/20 mobile bundle,internet + mobile,6.64,65,9999,50,20,NBN,
+303,nbn 100/20 mobile bundle,internet + mobile,6.86,75,9999,20,100,NBN,
+304,nbn 100/40 mobile bundle,internet + mobile,1.04,85,9999,40,100,NBN,
+305,nbn 250/25 mobile bundle,internet + mobile,1.26,100,9999,25,250,NBN,
+101,nbn 25/10,internet only,21,65,9999,10,25,NBN,
+102,nbn 50/20,internet only,33.2,75,9999,20,50,NBN,
+103,nbn 100/20,internet only,34.3,85,9999,20,100,NBN,
+104,nbn 100/40,internet only,5.2,95,9999,40,100,NBN,
+105,nbn 250/25,internet only,6.3,110,9999,25,250,NBN,
+501,good mates 12GB,mobile,0,25,10,,,Mobile,4G
+502,better mates 25GB,mobile,0,30,22,,,Mobile,4G
+503,great mates 32GB,mobile,0,35,32,,,Mobile,5G
+504,best mates 50GB,mobile,0,40,42,,,Mobile,5G
+505,brilliant mates 5G 65GB,mobile,0,45,120,,,Mobile,5G
+506,soul mates 5G 150GB,mobile,0,55,120,,,Mobile,5G
+201,nbn 25/10 home phone bundle,internet + home phone,2.1,74,9999,10,25,NBN,
+202,nbn 50/20 home phone bundle,internet + home phone,3.32,84,9999,20,50,NBN,
+203,nbn 100/20 home phone bundle,internet + home phone,3.43,94,9999,20,100,NBN,
+204,nbn 100/40 home phone bundle,internet + home phone,0.52,104,9999,40,100,NBN,
+205,nbn 250/25 home phone bundle,internet + home phone,0.63,119,9999,25,250,NBN,

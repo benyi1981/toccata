@@ -1,37 +1,45 @@
 {
-    "files": {
-        "geography_file": "data/australian_postcodes.csv",
-        "au_geo_json": "data/georef-australia-state@public.geojson",
-        "customer_file": {
-            "path": "data/simulated_customer_data.csv",
-            "parse_dates": ["join_date", "date_of_birth"],
-            "columns_to_include": null
-        },
+    "input_files": {
         "order_file": {
             "path": "data/simulated_orders.csv",
             "parse_dates": ["date_requested"],
-            "columns_to_include": null
+            "columns_to_include": null,
+            "join_on": null
         },
-        "product_lookup_file": {
-            "path": "data/promo_lookup.csv",
-            "parse_dates": null,
-            "columns_to_include": null
+        "customer_file": {
+            "path": "data/simulated_customer_data.csv",
+            "parse_dates": ["join_date", "date_of_birth"],
+            "columns_to_include": ["customer_id", "date_of_birth", "join_date", "brand_name", "agent", "agent_type", "heard_type", "marketing","suburb", "postcode"],
+            "join_on": "customer_id"
         },
         "promo_lookup_file": {
             "path": "data/promo_lookup.csv",
             "parse_dates": null,
-            "columns_to_include": null
+            "columns_to_include": null,
+            "join_on": "promo_code"
         }, 
         "gaining_provider_file": {
             "path": "data/simulated_gaining_provider_data.csv",
             "parse_dates": null,
-            "columns_to_include": ["subscription_id","gaining_provider_name"]
+            "columns_to_include": ["subscription_id","gaining_provider_name"],
+            "join_on": "subscription_id"
         },         
-        "model_stats_file": {
-            "path": "data/mate_churn_prediction_model_stats.csv",
+        "plan_lookup_file": {
+            "path": "data/simulated_plan_details.csv",
             "parse_dates": null,
-            "columns_to_include": null
-        }         
+            "columns_to_include": null,
+            "join_on": ["description","subscription_name"]           
+        }
     },
-   "timezone": "Australia/Sydney"
+   "timezone": "Australia/Sydney",
+   "starting_file": "order_file",
+   "model_stats_file": {
+        "path": "data/mate_churn_prediction_model_stats.csv",
+        "parse_dates": null,
+        "columns_to_include": null
+    },
+   "geography_files": {
+        "geography_file": "data/australian_postcodes.csv",
+        "au_geo_json": "data/georef-australia-state@public.geojson"
+    }
 }

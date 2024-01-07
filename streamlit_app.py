@@ -83,14 +83,14 @@ def load_config():
 # Load the configuration
 config = load_config()
 
-order_file = config["files"]["order_file"]
-customer_file = config["files"]["customer_file"]
-gaining_provider_file = config["files"]["gaining_provider_file"]
-promo_lookup_file = config["files"]["promo_lookup_file"]
-model_stats_file = config["files"]["model_stats_file"]
+order_file = config["input_files"]["order_file"]
+customer_file = config["fiinput_filesles"]["customer_file"]
+gaining_provider_file = config["input_files"]["gaining_provider_file"]
+promo_lookup_file = config["input_files"]["promo_lookup_file"]
+model_stats_file = config["input_files"]["model_stats_file"]
 
-geography_filepath = config["files"]["geography_file"]
-au_geo_json = config["files"]["au_geo_json"]
+geography_filepath = config["geography_files"]["geography_file"]
+au_geo_json = config["geography_files"]["au_geo_json"]
 
 #######################
 # Load data
@@ -291,7 +291,7 @@ def format_number(num):
 
 #######################
 # Dashboard Main Panel
-row_1_col = st.columns((1, 5, 2))
+row_1_col = st.columns((5, 2))
 
 # with row_1_col[0]:
 #     st.markdown('#### Gains/Losses')
@@ -328,7 +328,7 @@ row_1_col = st.columns((1, 5, 2))
 #     st.altair_chart(donut_chart)
 
 
-with row_1_col[1]:
+with row_1_col[0]:
     st.markdown('#### Total Customer Count')
 
     df_reshaped = df_filtered.groupby('state').size().reset_index(name='customer_count')
@@ -341,7 +341,7 @@ with row_1_col[1]:
     # st.altair_chart(heatmap, use_container_width=True)
     
 
-with row_1_col[2]:
+with row_1_col[1]:
     st.markdown('#### Top States')
     df_reshaped = df_filtered.groupby('state').size().reset_index(name='customer_count').sort_values("customer_count",ascending=False)
     st.dataframe(df_reshaped,
