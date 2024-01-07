@@ -87,7 +87,7 @@ order_file = config["input_files"]["order_file"]
 customer_file = config["input_files"]["customer_file"]
 gaining_provider_file = config["input_files"]["gaining_provider_file"]
 promo_lookup_file = config["input_files"]["promo_lookup_file"]
-model_stats_file = config["input_files"]["model_stats_file"]
+model_stats_file = config["model_stats_file"]["path"]
 
 geography_filepath = config["geography_files"]["geography_file"]
 au_geo_json = config["geography_files"]["au_geo_json"]
