@@ -34,9 +34,7 @@
    "timezone": "Australia/Sydney",
    "starting_file": "order_file",
    "model_stats_file": {
-        "path": "data/mate_churn_prediction_model_stats.csv",
-        "parse_dates": null,
-        "columns_to_include": null
+        "path": "data/mate_churn_prediction_model_stats.csv"
     },
    "geography_files": {
         "geography_file": "data/australian_postcodes.csv",

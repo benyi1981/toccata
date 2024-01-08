@@ -13691,3 +13691,19 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 
 2024-01-05 14:17:07,627:WARNING:reindexing with a non-unique Index is deprecated and will raise in a future version.
 
+2024-01-08 11:03:08,178:WARNING:--- Logging error ---
+2024-01-08 11:03:08,322:WARNING:Traceback (most recent call last):
+2024-01-08 11:03:08,323:WARNING:  File "/opt/homebrew/anaconda3/lib/python3.10/logging/__init__.py", line 1104, in emit
+2024-01-08 11:03:08,323:WARNING:    self.flush()
+2024-01-08 11:03:08,347:WARNING:  File "/opt/homebrew/anaconda3/lib/python3.10/logging/__init__.py", line 1084, in flush
+2024-01-08 11:03:08,351:WARNING:    self.stream.flush()
+2024-01-08 11:03:08,351:WARNING:OSError: [Errno 5] Input/output error
+2024-01-08 11:03:08,374:WARNING:Call stack:
+2024-01-08 11:03:08,381:WARNING:  File "/opt/homebrew/anaconda3/lib/python3.10/threading.py", line 973, in _bootstrap
+2024-01-08 11:03:08,381:WARNING:    self._bootstrap_inner()
+2024-01-08 11:03:08,381:WARNING:  File "/opt/homebrew/anaconda3/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+2024-01-08 11:03:08,382:WARNING:    self.run()
+2024-01-08 11:03:08,382:WARNING:  File "/opt/homebrew/anaconda3/lib/python3.10/site-packages/ipykernel/parentpoller.py", line 35, in run
+2024-01-08 11:03:08,382:WARNING:    get_logger().warning("Parent appears to have exited, shutting down.")
+2024-01-08 11:03:08,382:WARNING:Message: 'Parent appears to have exited, shutting down.'
+2024-01-08 11:03:08,382:WARNING:Arguments: ()
